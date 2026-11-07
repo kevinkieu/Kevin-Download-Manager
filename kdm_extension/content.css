@@ -1,0 +1,191 @@
+/* KDM Floating Download Bar Styles - Compact & Top-Left Design */
+#kdm-video-bar {
+  z-index: 2147483647 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 12px !important;
+  background: rgba(18, 22, 28, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(59, 130, 246, 0.75) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 0 10px rgba(37, 99, 235, 0.35) !important;
+  padding: 2px 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  user-select: none !important;
+  pointer-events: auto !important;
+  height: 28px !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.15s ease, background 0.15s ease !important;
+}
+
+#kdm-video-bar:hover {
+  background: rgba(26, 32, 44, 0.98) !important;
+  border-color: #3b82f6 !important;
+}
+
+#kdm-video-bar.kdm-hidden,
+#kdm-menu.kdm-hidden {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Drag Grip */
+#kdm-video-bar .kdm-drag-grip {
+  color: #64748b !important;
+  cursor: grab !important;
+  font-size: 12px !important;
+  padding: 0 2px !important;
+  letter-spacing: -1px !important;
+  user-select: none !important;
+}
+#kdm-video-bar .kdm-drag-grip:active {
+  cursor: grabbing !important;
+}
+
+/* Main Download Button */
+#kdm-video-bar .kdm-main-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  transition: background 0.15s ease !important;
+}
+#kdm-video-bar .kdm-main-btn:hover {
+  background: rgba(59, 130, 246, 0.3) !important;
+}
+
+#kdm-video-bar .kdm-icon {
+  width: 17px !important;
+  height: 17px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border-radius: 3px !important;
+  font-size: 11px !important;
+  font-weight: bold !important;
+}
+
+#kdm-video-bar .kdm-text {
+  font-weight: 600 !important;
+  color: #f3f4f6 !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+}
+
+/* Arrow Dropdown Button */
+#kdm-video-bar .kdm-arrow {
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+  padding: 2px 5px !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+#kdm-video-bar .kdm-arrow:hover {
+  color: #ffffff !important;
+  background: rgba(59, 130, 246, 0.35) !important;
+}
+
+/* Close Button */
+#kdm-video-bar .kdm-close {
+  color: #94a3b8 !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+#kdm-video-bar .kdm-close:hover {
+  color: #ffffff !important;
+  background: #ef4444 !important;
+}
+
+/* KDM Dropdown Menu */
+#kdm-menu {
+  z-index: 2147483647 !important;
+  background: #181d24 !important;
+  border: 1px solid rgba(59, 130, 246, 0.6) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85) !important;
+  min-width: 260px !important;
+  max-width: 360px !important;
+  padding: 4px 0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 12px !important;
+  display: none;
+  pointer-events: auto !important;
+  box-sizing: border-box !important;
+}
+
+.kdm-menu-item {
+  padding: 8px 12px !important;
+  color: #e5e7eb !important;
+  cursor: pointer !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  transition: background 0.15s ease !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+.kdm-menu-item:hover {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.kdm-item-title {
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
+
+.kdm-item-sub {
+  font-size: 11px !important;
+  opacity: 0.75 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.kdm-menu-header {
+  padding: 5px 12px !important;
+  font-size: 10px !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  color: #9ca3af !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  margin-bottom: 3px !important;
+}
+
+.kdm-badge-notification {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 2147483647 !important;
+  background: #10b981 !important;
+  color: #ffffff !important;
+  padding: 10px 18px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  animation: kdmFadeIn 0.3s ease !important;
+}
+
+@keyframes kdmFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}

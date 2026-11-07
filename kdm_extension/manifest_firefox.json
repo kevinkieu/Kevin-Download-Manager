@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "KDM - Kevin Download Manager Integration",
+  "version": "1.1.0",
+  "description": "Bắt link tải file và video tốc độ cao cho KDM (YouTube, TikTok, Phim lẻ, Phim bộ, Anime, HLS/M3U8, Google Drive, v.v.)",
+  "permissions": [
+    "downloads",
+    "contextMenus",
+    "activeTab",
+    "storage",
+    "webRequest",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "all_frames": true,
+      "match_about_blank": true,
+      "run_at": "document_idle"
+    }
+  ]
+}

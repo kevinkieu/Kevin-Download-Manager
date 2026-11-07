@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller build artifacts & binaries
+build/
+dist/
+*.manifest
+
+# KDM runtime state & local configs
+settings.json
+*.kdm_state
+*.log
+log_test.txt
+
+# OS & IDE temporary files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
