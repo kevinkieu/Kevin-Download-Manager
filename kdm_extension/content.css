@@ -1,22 +1,23 @@
-/* KDM Floating Download Bar Styles - Compact & Top-Left Design */
+/* KDM Floating Download Bar Styles - Symmetrical Top-Right Design */
 #kdm-video-bar {
   z-index: 2147483647 !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-  font-size: 12px !important;
-  background: rgba(18, 22, 28, 0.95) !important;
+  font-size: 11px !important;
+  background: rgba(18, 22, 28, 0.96) !important;
   backdrop-filter: blur(8px) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(59, 130, 246, 0.75) !important;
-  border-radius: 6px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 0 10px rgba(37, 99, 235, 0.35) !important;
-  padding: 2px 6px !important;
+  border: 1px solid rgba(59, 130, 246, 0.6) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 6px rgba(37, 99, 235, 0.3) !important;
+  padding: 0 4px !important;
   display: flex !important;
   align-items: center !important;
-  gap: 5px !important;
+  gap: 4px !important;
   user-select: none !important;
   pointer-events: auto !important;
-  height: 28px !important;
+  height: 24px !important;
   box-sizing: border-box !important;
+  line-height: 1 !important;
   transition: border-color 0.15s ease, background 0.15s ease !important;
 }
 
@@ -37,8 +38,8 @@
 #kdm-video-bar .kdm-drag-grip {
   color: #64748b !important;
   cursor: grab !important;
-  font-size: 12px !important;
-  padding: 0 2px !important;
+  font-size: 10px !important;
+  padding: 0 1px !important;
   letter-spacing: -1px !important;
   user-select: none !important;
 }
@@ -50,10 +51,10 @@
 #kdm-video-bar .kdm-main-btn {
   display: flex !important;
   align-items: center !important;
-  gap: 6px !important;
+  gap: 5px !important;
   cursor: pointer !important;
-  padding: 2px 6px !important;
-  border-radius: 4px !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
   transition: background 0.15s ease !important;
 }
 #kdm-video-bar .kdm-main-btn:hover {
@@ -61,34 +62,34 @@
 }
 
 #kdm-video-bar .kdm-icon {
-  width: 17px !important;
-  height: 17px !important;
+  width: 15px !important;
+  height: 15px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   background: #2563eb !important;
   color: #ffffff !important;
   border-radius: 3px !important;
-  font-size: 11px !important;
+  font-size: 10px !important;
   font-weight: bold !important;
 }
 
 #kdm-video-bar .kdm-text {
   font-weight: 600 !important;
   color: #f3f4f6 !important;
-  font-size: 12px !important;
+  font-size: 11px !important;
   white-space: nowrap !important;
 }
 
 /* Arrow Dropdown Button */
 #kdm-video-bar .kdm-arrow {
   color: #94a3b8 !important;
-  font-size: 11px !important;
-  padding: 2px 5px !important;
+  font-size: 10px !important;
+  padding: 2px 4px !important;
   border-radius: 3px !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
-  border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 #kdm-video-bar .kdm-arrow:hover {
   color: #ffffff !important;
@@ -98,16 +99,17 @@
 /* Close Button */
 #kdm-video-bar .kdm-close {
   color: #94a3b8 !important;
-  font-size: 15px !important;
+  font-size: 13px !important;
   line-height: 1 !important;
-  width: 18px !important;
-  height: 18px !important;
+  width: 16px !important;
+  height: 16px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   border-radius: 3px !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
+  margin-left: 1px !important;
 }
 #kdm-video-bar .kdm-close:hover {
   color: #ffffff !important;

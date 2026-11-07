@@ -1,6 +1,7 @@
 /**
  * KDM - Kevin Download Manager
- * Content Script: Compact, Top-Left Floating Download Bar & Universal Video Sniffer
+ * Content Script: Top-Right Symmetrical Floating Download Bar & Video Sniffer
+ * Positioned ABOVE the video frame on the RIGHT side (symmetrical to browser downloader)
  * Supports 1-Click Fast Download, Resolution Picker, Drag-and-Drop, and Close
  */
 
@@ -42,7 +43,7 @@
     return rawUrl;
   }
 
-  // Find the exact video player container to anchor the bar inside
+  // Find the exact video player container
   function getPlayerContainer() {
     // 1. YouTube Player
     const ytPlayer = document.querySelector("#movie_player") || document.querySelector(".html5-video-player");
@@ -56,15 +57,83 @@
       const v = videos[0];
       const player = v.closest('.jwplayer, .video-js, .plyr, [class*="player"], [id*="player"]') || v.parentElement;
       if (player) {
-        const pos = window.getComputedStyle(player).position;
-        if (pos === "static") {
-          player.style.position = "relative";
-        }
         return player;
       }
     }
 
     return null;
+  }
+
+  function updateBarPosition() {
+    if (!barElement || isBarDismissed) return;
+
+    const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    const container = getPlayerContainer();
+    if (!container) return;
+
+    if (isFullscreen) {
+      // In fullscreen: anchor inside the player container at top-right
+      if (barElement.parentElement !== container) {
+        container.appendChild(barElement);
+        if (menuElement) container.appendChild(menuElement);
+      }
+      barElement.style.position = "absolute";
+      barElement.style.top = "12px";
+      barElement.style.right = "16px";
+      barElement.style.left = "auto";
+      return;
+    }
+
+    // Normal mode: Anchor to document.body so it is NEVER clipped and sits ABOVE the video
+    if (barElement.parentElement !== document.body) {
+      document.body.appendChild(barElement);
+      if (menuElement) document.body.appendChild(menuElement);
+    }
+
+    const rect = container.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+
+    // Check if user manually dragged it
+    const isManuallyDragged = sessionStorage.getItem("kdm_bar_manually_dragged") === "true";
+    const savedLeft = sessionStorage.getItem("kdm_bar_drag_left");
+    const savedTop = sessionStorage.getItem("kdm_bar_drag_top");
+
+    if (isManuallyDragged && savedLeft !== null && savedTop !== null) {
+      barElement.style.position = "absolute";
+      barElement.style.left = savedLeft + "px";
+      barElement.style.top = savedTop + "px";
+      barElement.style.right = "auto";
+    } else {
+      // Symmetrical position: ABOVE the video on the RIGHT side!
+      // Perfectly matches Cốc Cốc's toolbar height on the left without covering the video
+      const barHeight = barElement.offsetHeight || 24;
+      const barWidth = barElement.offsetWidth || 170;
+
+      const videoTop = rect.top + window.scrollY;
+      const videoRight = rect.right + window.scrollX;
+
+      // Position ABOVE the video frame with a 4px gap:
+      const targetTop = videoTop - barHeight - 4;
+      // Align to the RIGHT side of the video (10px margin from right edge):
+      const targetLeft = videoRight - barWidth - 10;
+
+      barElement.style.position = "absolute";
+      barElement.style.top = targetTop + "px";
+      barElement.style.left = targetLeft + "px";
+      barElement.style.right = "auto";
+    }
+
+    if (menuElement && menuElement.style.display === "block") {
+      const bLeft = parseInt(barElement.style.left, 10) || 0;
+      const bTop = parseInt(barElement.style.top, 10) || 0;
+      const bHeight = barElement.offsetHeight || 24;
+      const bWidth = barElement.offsetWidth || 170;
+      const mWidth = menuElement.offsetWidth || 260;
+      menuElement.style.position = "absolute";
+      menuElement.style.top = (bTop + bHeight + 4) + "px";
+      menuElement.style.left = Math.max(10, bLeft - mWidth + bWidth) + "px";
+      menuElement.style.right = "auto";
+    }
   }
 
   // Create or attach the floating download bar
@@ -75,6 +144,7 @@
     }
 
     const container = getPlayerContainer();
+    if (!container) return;
 
     if (!barElement) {
       barElement = document.createElement("div");
@@ -122,9 +192,17 @@
           menuElement.classList.remove("kdm-hidden");
           menuElement.style.removeProperty("display");
           menuElement.style.display = "block";
+
+          const bLeft = parseInt(barElement.style.left, 10) || barElement.offsetLeft || 0;
+          const bTop = parseInt(barElement.style.top, 10) || barElement.offsetTop || 0;
+          const bHeight = barElement.offsetHeight || 24;
+          const bWidth = barElement.offsetWidth || 170;
+          const mWidth = menuElement.offsetWidth || 260;
+
           menuElement.style.position = "absolute";
-          menuElement.style.left = (barElement.offsetLeft || 10) + "px";
-          menuElement.style.top = (barElement.offsetTop + 32) + "px";
+          menuElement.style.top = (bTop + bHeight + 4) + "px";
+          menuElement.style.left = Math.max(10, bLeft - mWidth + bWidth) + "px";
+          menuElement.style.right = "auto";
         }
       });
 
@@ -155,8 +233,8 @@
         isDragging = true;
         dragStartX = e.clientX;
         dragStartY = e.clientY;
-        barStartX = barElement.offsetLeft;
-        barStartY = barElement.offsetTop;
+        barStartX = parseInt(barElement.style.left, 10) || barElement.offsetLeft || 0;
+        barStartY = parseInt(barElement.style.top, 10) || barElement.offsetTop || 0;
         e.preventDefault();
         e.stopPropagation();
       });
@@ -170,13 +248,17 @@
         barElement.style.left = newLeft + "px";
         barElement.style.top = newTop + "px";
         barElement.style.right = "auto";
-        if (menuElement) {
-          menuElement.style.left = newLeft + "px";
-          menuElement.style.top = (newTop + 32) + "px";
+        if (menuElement && menuElement.style.display === "block") {
+          const bWidth = barElement.offsetWidth || 170;
+          const bHeight = barElement.offsetHeight || 24;
+          const mWidth = menuElement.offsetWidth || 260;
+          menuElement.style.left = Math.max(10, newLeft - mWidth + bWidth) + "px";
+          menuElement.style.top = (newTop + bHeight + 4) + "px";
           menuElement.style.right = "auto";
         }
-        sessionStorage.setItem("kdm_bar_left", newLeft);
-        sessionStorage.setItem("kdm_bar_top", newTop);
+        sessionStorage.setItem("kdm_bar_manually_dragged", "true");
+        sessionStorage.setItem("kdm_bar_drag_left", newLeft);
+        sessionStorage.setItem("kdm_bar_drag_top", newTop);
       });
 
       document.addEventListener("mouseup", () => {
@@ -197,29 +279,11 @@
           menuElement.style.display = "none";
         }
       });
-    }
 
-    // Anchor to player container if found, otherwise body
-    const targetParent = container || document.body;
-    if (barElement.parentElement !== targetParent) {
-      targetParent.appendChild(barElement);
-      targetParent.appendChild(menuElement);
-    }
-
-    // Default position: Top-Left (above video playback area, matching Cốc Cốc / IDM style)
-    const savedLeft = sessionStorage.getItem("kdm_bar_left");
-    const savedTop = sessionStorage.getItem("kdm_bar_top");
-
-    if (savedLeft !== null && savedTop !== null) {
-      barElement.style.position = container ? "absolute" : "fixed";
-      barElement.style.left = savedLeft + "px";
-      barElement.style.top = savedTop + "px";
-      barElement.style.right = "auto";
-    } else {
-      barElement.style.position = container ? "absolute" : "fixed";
-      barElement.style.left = "10px";
-      barElement.style.top = "6px";
-      barElement.style.right = "auto";
+      window.addEventListener("scroll", updateBarPosition, { passive: true });
+      window.addEventListener("resize", updateBarPosition, { passive: true });
+      document.addEventListener("fullscreenchange", updateBarPosition);
+      document.addEventListener("webkitfullscreenchange", updateBarPosition);
     }
 
     if (barElement.classList.contains("kdm-hidden")) {
@@ -227,6 +291,8 @@
     }
     barElement.style.removeProperty("display");
     barElement.style.display = "flex";
+
+    updateBarPosition();
   }
 
   function renderMenuContent() {
@@ -433,6 +499,7 @@
       }
       setTimeout(hookVideoTags, 600);
     } else if (!isBarDismissed) {
+      updateBarPosition();
       hookVideoTags();
     }
   }).observe(document.body || document.documentElement, { childList: true, subtree: true });
