@@ -6,6 +6,7 @@ __pycache__/
 # PyInstaller build artifacts & binaries
 build/
 dist/
+dist_installer/
 *.manifest
 
 # KDM runtime state & local configs

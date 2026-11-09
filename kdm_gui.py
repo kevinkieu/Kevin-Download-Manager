@@ -1067,7 +1067,7 @@ class KDMApp(ctk.CTk):
     def show_extension_guide(self):
         dlg = ctk.CTkToplevel(self)
         dlg.title("Cài đặt Extension KDM (Chrome, Cốc Cốc, Edge, Firefox)")
-        dlg.geometry("640x520")
+        dlg.geometry("640x580")
         dlg.transient(self)
         dlg.grab_set()
 
@@ -1085,9 +1085,9 @@ class KDMApp(ctk.CTk):
             "1. Thư mục Extension KDM của bạn nằm tại:\n"
             f"   ▶ {ext_dir}\n\n"
             "2. Cách cài đặt cho Cốc Cốc, Google Chrome, Microsoft Edge, Brave:\n"
-            "   • Mở Cốc Cốc / Chrome và truy cập: coccoc://extensions (hoặc chrome://extensions/)\n"
+            "   • Bấm vào nút mở trình duyệt bên dưới (hoặc gõ coccoc://extensions / chrome://extensions)\n"
             "   • Bật công tắc 'Chế độ dành cho nhà phát triển' (Developer mode) ở góc phải trên.\n"
-            "   • Bấm vào nút 'Tải tiện ích đã giải nén' (Load unpacked) -> Chọn thư mục 'kdm_extension'.\n"
+            "   • Bấm nút '📁 Mở Thư Mục Extension' bên dưới rồi KÉO THẢ thư mục 'kdm_extension' vào trình duyệt!\n"
             "   • (Nếu đã cài trước đó, chỉ cần bấm biểu tượng Làm Mới 🔄 trên thẻ KDM).\n\n"
             "3. Phím tắt cao cấp như IDM:\n"
             "   • Giữ Alt + Bấm chuột vào link: Ép tải bằng KDM ngay lập tức.\n"
@@ -1098,16 +1098,33 @@ class KDMApp(ctk.CTk):
             "✓ Xong! Khi xem phim trên bất kỳ trang web nào, thanh nổi KDM sẽ tự bắt luồng m3u8/mp4 ngay trên khung phát!"
         )
 
-        txt_box = ctk.CTkTextbox(dlg, width=600, height=350, font=("Consolas", 12))
+        txt_box = ctk.CTkTextbox(dlg, width=600, height=310, font=("Consolas", 12))
         txt_box.pack(padx=20, pady=8)
         txt_box.insert("1.0", guide_text)
         txt_box.configure(state="disabled")
 
+        btn_row = ctk.CTkFrame(dlg, fg_color="transparent")
+        btn_row.pack(fill="x", padx=20, pady=6)
+
+        def open_coccoc():
+            subprocess.Popen("cmd /c start coccoc://extensions", shell=True)
+            subprocess.Popen(f'explorer "{ext_dir}"')
+
+        def open_chrome():
+            subprocess.Popen("cmd /c start chrome://extensions", shell=True)
+            subprocess.Popen(f'explorer "{ext_dir}"')
+
+        def open_edge():
+            subprocess.Popen("cmd /c start edge://extensions", shell=True)
+            subprocess.Popen(f'explorer "{ext_dir}"')
+
         def open_folder():
             subprocess.Popen(f'explorer "{ext_dir}"')
 
-        btn_open = ctk.CTkButton(dlg, text="📁 Mở Thư Mục Extension KDM Trên Máy", fg_color="#2563eb", command=open_folder)
-        btn_open.pack(pady=10)
+        ctk.CTkButton(btn_row, text="🟢 Cốc Cốc", width=125, fg_color="#00aa4f", hover_color="#00883f", font=("Segoe UI", 12, "bold"), command=open_coccoc).pack(side="left", padx=3)
+        ctk.CTkButton(btn_row, text="🔴 Chrome", width=125, fg_color="#ea4335", hover_color="#c5221f", font=("Segoe UI", 12, "bold"), command=open_chrome).pack(side="left", padx=3)
+        ctk.CTkButton(btn_row, text="🔵 Edge", width=125, fg_color="#0078d7", hover_color="#005ea6", font=("Segoe UI", 12, "bold"), command=open_edge).pack(side="left", padx=3)
+        ctk.CTkButton(btn_row, text="📁 Thư mục Ext", width=145, fg_color="#2563eb", hover_color="#1d4ed8", font=("Segoe UI", 12, "bold"), command=open_folder).pack(side="left", padx=3)
 
     # ==========================================
     # ACTIONS ON TASKS
